@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import pytest
 
+from tests.mothers.create_user_dto import CreateUserDTOMother
 from users.application.dtos.create_user_dto import CreateUserDTO
 from users.application.use_cases.create_user_use_case import CreateUserUseCase
 from users.domain.user import User
@@ -24,11 +25,7 @@ def create_user_setup() -> CreateUserSetup:
 
 def test_create_user_succesfully(create_user_setup: CreateUserSetup):
     gus: User = create_user_setup.use_case.run(
-        CreateUserDTO(
-            username="gus",
-            email="gus@gmail.com",
-            password="password123",
-        )
+        CreateUserDTOMother.create(username="gus")
     )
 
     assert isinstance(gus, User)
@@ -39,25 +36,17 @@ def test_create_user_succesfully(create_user_setup: CreateUserSetup):
 def test_create_user_with_invalid_email(create_user_setup: CreateUserSetup):
     with pytest.raises(EmailNotValidException):
         create_user_setup.use_case.run(
-            CreateUserDTO(
-                username="gus",
-                email="invalid-email",
-                password="password123",
-            )
+            CreateUserDTOMother.create(email="invalid-email")
         )
 
 def test_user_already_exists(create_user_setup: CreateUserSetup):
     gus: User = create_user_setup.use_case.run(
-        CreateUserDTO(
-            username="gus",
-            email="gus@gmail.com",
-            password="password123"
-        )
+        CreateUserDTOMother.create()
     )
 
     with pytest.raises(UserAlreadyExistsException):
         new_gus: User = create_user_setup.use_case.run(
-            CreateUserDTO(
+            CreateUserDTOMother.create(
                 username=gus.username,
                 email=str(gus.email),
                 password=gus.password
