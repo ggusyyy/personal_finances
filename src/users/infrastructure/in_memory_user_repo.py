@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
-from users.domain.user import User
-from users.domain.user_repository import UserRepository
-from users.domain.value_objects.email import Email
+from src.users.domain.user import User
+from src.users.domain.user_repository import UserRepository
+from src.users.domain.value_objects.email import Email
 
 
 class InMemoryUserRepository(UserRepository):

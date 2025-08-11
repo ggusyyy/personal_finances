@@ -2,13 +2,12 @@ from dataclasses import dataclass
 import pytest
 
 from tests.mothers.create_user_dto import CreateUserDTOMother
-from users.application.dtos.create_user_dto import CreateUserDTO
-from users.application.use_cases.create_user_use_case import CreateUserUseCase
-from users.domain.user import User
-from users.domain.user_already_exists_exception import UserAlreadyExistsException
-from users.domain.user_repository import UserRepository
-from users.domain.value_objects.email_not_valid_exception import EmailNotValidException
-from users.infrastructure.in_memory_user_repo import InMemoryUserRepository
+from src.users.application.use_cases.create_user_use_case import CreateUserUseCase
+from src.users.domain.user import User
+from src.users.domain.user_already_exists_exception import UserAlreadyExistsException
+from src.users.domain.user_repository import UserRepository
+from src.users.domain.value_objects.email_not_valid_exception import EmailNotValidException
+from src.users.infrastructure.in_memory_user_repo import InMemoryUserRepository
 
 
 @dataclass

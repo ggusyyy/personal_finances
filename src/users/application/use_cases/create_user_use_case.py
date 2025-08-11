@@ -1,14 +1,14 @@
 from datetime import datetime
 from uuid import uuid4
-from users.application.dtos.create_user_dto import CreateUserDTO
-from users.domain.user import User
-from users.domain.user_already_exists_exception import UserAlreadyExistsException
-from users.domain.user_data_not_valid_exception import UserNotValidException
-from users.domain.user_passw_too_short_exception import UserPasswordTooShortException
-from users.domain.user_repository import UserRepository
-from users.domain.user_username_too_short_exception import UserUsernameTooShortException
-from users.domain.value_objects.email import Email
-from users.domain.value_objects.email_not_valid_exception import EmailNotValidException
+from src.users.application.dtos.create_user_dto import CreateUserDTO
+from src.users.domain.user import User
+from src.users.domain.user_already_exists_exception import UserAlreadyExistsException
+from src.users.domain.user_data_not_valid_exception import UserNotValidException
+from src.users.domain.user_passw_too_short_exception import UserPasswordTooShortException
+from src.users.domain.user_repository import UserRepository
+from src.users.domain.user_username_too_short_exception import UserUsernameTooShortException
+from src.users.domain.value_objects.email import Email
+from src.users.domain.value_objects.email_not_valid_exception import EmailNotValidException
 
 
 class CreateUserUseCase:

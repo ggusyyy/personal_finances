@@ -1,6 +1,6 @@
-from users.api.schemas import UserOut
-from users.domain.user_not_found_exception import UserNotFoundException
-from users.domain.user_repository import UserRepository
+from src.users.api.schemas import UserOut
+from src.users.domain.user_not_found_exception import UserNotFoundException
+from src.users.domain.user_repository import UserRepository
 
 
 class GetUserByIdUseCase:

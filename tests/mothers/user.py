@@ -1,8 +1,8 @@
 from faker import Faker
 
 from datetime import datetime
-from users.domain.user import User
-from users.domain.value_objects.email import Email
+from src.users.domain.user import User
+from src.users.domain.value_objects.email import Email
 
 
 class UserMother:

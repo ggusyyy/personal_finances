@@ -1,7 +1,7 @@
 from typing import List
-from users.api.schemas import UserOut
-from users.domain.user import User
-from users.domain.user_repository import UserRepository
+from src.users.api.schemas import UserOut
+from src.users.domain.user import User
+from src.users.domain.user_repository import UserRepository
 
 
 class GetAllUsersUseCase:

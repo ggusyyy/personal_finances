@@ -1,4 +1,4 @@
-from users.application.dtos.create_user_dto import CreateUserDTO
+from src.users.application.dtos.create_user_dto import CreateUserDTO
 
 from faker import Faker
 

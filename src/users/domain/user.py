@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from users.domain.value_objects.email import Email
+from .value_objects.email import Email
 
 @dataclass
 class User:
