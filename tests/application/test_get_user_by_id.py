@@ -6,7 +6,7 @@ from tests.mothers.user import UserMother
 from src.users.api.schemas import UserOut
 from src.users.application.use_cases.get_user_by_id_use_case import GetUserByIdUseCase
 from src.users.domain.user import User
-from src.users.domain.user_not_found_exception import UserNotFoundException
+from src.users.domain.exceptions.user_not_found_exception import UserNotFoundException
 from src.users.domain.user_repository import UserRepository
 from src.users.infrastructure.in_memory_user_repo import InMemoryUserRepository
 

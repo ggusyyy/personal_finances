@@ -2,11 +2,11 @@ from datetime import datetime
 from uuid import uuid4
 from src.users.application.dtos.create_user_dto import CreateUserDTO
 from src.users.domain.user import User
-from src.users.domain.user_already_exists_exception import UserAlreadyExistsException
-from src.users.domain.user_data_not_valid_exception import UserNotValidException
-from src.users.domain.user_passw_too_short_exception import UserPasswordTooShortException
+from src.users.domain.exceptions.user_already_exists_exception import UserAlreadyExistsException
+from src.users.domain.exceptions.user_data_not_valid_exception import UserNotValidException
+from src.users.domain.exceptions.user_passw_too_short_exception import UserPasswordTooShortException
 from src.users.domain.user_repository import UserRepository
-from src.users.domain.user_username_too_short_exception import UserUsernameTooShortException
+from src.users.domain.exceptions.user_username_too_short_exception import UserUsernameTooShortException
 from src.users.domain.value_objects.email import Email
 from src.users.domain.value_objects.email_not_valid_exception import EmailNotValidException
 

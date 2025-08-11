@@ -4,7 +4,7 @@ import pytest
 from tests.mothers.create_user_dto import CreateUserDTOMother
 from src.users.application.use_cases.create_user_use_case import CreateUserUseCase
 from src.users.domain.user import User
-from src.users.domain.user_already_exists_exception import UserAlreadyExistsException
+from src.users.domain.exceptions.user_already_exists_exception import UserAlreadyExistsException
 from src.users.domain.user_repository import UserRepository
 from src.users.domain.value_objects.email_not_valid_exception import EmailNotValidException
 from src.users.infrastructure.in_memory_user_repo import InMemoryUserRepository

@@ -10,3 +10,4 @@ class User:
     email: Email
     password: str
     created_at: datetime
+    balance: float = 0

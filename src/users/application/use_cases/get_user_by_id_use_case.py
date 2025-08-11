@@ -1,5 +1,5 @@
 from src.users.api.schemas import UserOut
-from src.users.domain.user_not_found_exception import UserNotFoundException
+from src.users.domain.exceptions.user_not_found_exception import UserNotFoundException
 from src.users.domain.user_repository import UserRepository
 
 
