@@ -10,7 +10,7 @@ class GetUserByIdUseCase:
     def run(self, id: str) -> UserOut:
         user = self.user_repository.get_by_id(id)
         if not user:
-            raise UserNotFoundException
+            raise UserNotFoundException()
         
         return UserOut(
             id=user.id,
