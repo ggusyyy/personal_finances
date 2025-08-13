@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from auth.domain.auth_token import AuthToken
+from src.auth.domain.auth_token import AuthToken
 
 
 class TokenManager(ABC):

@@ -1,6 +1,6 @@
 import bcrypt
 
-from auth.domain.pw_hassher import PasswordHasher
+from src.auth.domain.pw_hasher import PasswordHasher
 
 
 
@@ -14,5 +14,5 @@ class BcryptPasswordHasher(PasswordHasher):
     def hash(self, plain_password: str) -> str:
         return bcrypt.hashpw(plain_password.encode(), self.__salt).decode()
 
-    def compare(self, password: str, hashed_password: str) -> bool:
+    def verify(self, password: str, hashed_password: str) -> bool:
         return bcrypt.checkpw(password.encode(), hashed_password.encode())
