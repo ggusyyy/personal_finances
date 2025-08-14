@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, status, Depends, HTTPException
 
 from src.users.application.use_cases.get_all_users_use_case import GetAllUsersUseCase
 from src.users.application.use_cases.get_user_by_id_use_case import GetUserByIdUseCase
@@ -18,8 +18,14 @@ def get_all_users(
     """
     Endpoint to get all users
     """
-    users: List[UserOut] = get_all_users_use_case.run()
-    
+    try:
+        users: List[UserOut] = get_all_users_use_case.run()
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
     return users
 
 @router.get("/users", response_model=UserOut)
@@ -28,8 +34,14 @@ def get_user_by_id(
     get_user_by_id_use_case: GetUserByIdUseCase = Depends(get_user_by_id_use_case)
 ):
     """
-    endpoint to get a user by id
+    Endpoint to get a user by id
     """
-    user: UserOut = get_user_by_id_use_case.run(id) # ARREGLA ESTO
+    try:
+        user: UserOut = get_user_by_id_use_case.run(id) # ARREGLA ESTO
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        )
 
     return user

@@ -29,14 +29,9 @@ class JwtTokenManager(TokenManager):
 
     def decrypt_token(self, token: AuthToken) -> str:
         try:
-            print("decrypting")
-            decoded = jwt.decode(token.content, self.__secret_key)
-            print(decoded)
-            print(decoded["sub"])
+            decoded = jwt.decode(token.content, self.__secret_key, algorithms=["HS256"])
             return decoded["sub"]
         except ExpiredSignatureError:
-            print("already expired")
             raise ExpiredTokenException()
-        except JWTError as e:
-            print(f"weird error: {e}")
+        except JWTError:
             raise InvalidTokenException()

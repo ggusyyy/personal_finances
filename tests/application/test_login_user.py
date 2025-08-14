@@ -3,7 +3,7 @@ import pytest
 
 from src.auth.domain.auth_token import AuthToken
 from src.auth.application.dtos.login_dto import LoginDTO
-from auth.application.use_cases.login_user_use_case import LoginUserUseCase
+from src.auth.application.use_cases.login_user_use_case import LoginUserUseCase
 from src.auth.domain.pw_hasher import PasswordHasher
 from src.auth.domain.token_manager import TokenManager
 from src.auth.infrastructure.bcrypt_pw_hasher import BcryptPasswordHasher

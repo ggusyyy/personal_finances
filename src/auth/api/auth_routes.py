@@ -16,7 +16,7 @@ def register_user(
     register_user_use_case: RegisterUserUseCase = Depends(get_register_user_use_case)
 ):
     """
-    endpoint to create a new user
+    Endpoint to create a new user
     """
 
     try:
@@ -27,7 +27,6 @@ def register_user(
             password=new_user.password
             )
         )
-
 
     except Exception as e:
         raise HTTPException(
