@@ -11,7 +11,6 @@ from src.auth.infrastructure.jwt_token_manager import JwtTokenManager
 from src.users.domain.user_repository import UserRepository
 from src.users.infrastructure.in_memory_user_repo import InMemoryUserRepository
 from tests.mothers.user import UserMother
-from src.users.domain.user import User
 
 @dataclass
 class LoginUserSetup:
@@ -34,12 +33,34 @@ def login_user_setup() -> LoginUserSetup:
         use_case=use_case
         )
 
-"""
-def test_login_user_successfully(login_user_setup: LoginUserSetup):
-    user: User = UserMother.create()
-    login_user_setup.repo.save(user)
 
-    user_token: AuthToken = login_user_setup.use_case.run(
-        LoginDTO(user.username, user.password)
-    )
-"""
+def test_login_user_successfully(login_user_setup: LoginUserSetup):
+    user = UserMother.create()
+    login_user_setup.repo.save(user)
+    
+    dto = LoginDTO(email=user.email.email, password="password123")
+    user.password = login_user_setup.hasher.hash(dto.password)
+    login_user_setup.repo.save(user)
+    
+    token: AuthToken = login_user_setup.use_case.run(dto)
+    assert isinstance(token, AuthToken)
+
+    decoded_user_id = login_user_setup.token_manager.decrypt_token(token)
+    assert decoded_user_id == user.id
+
+def test_it_raises_when_given_password_is_wrong(login_user_setup: LoginUserSetup):
+    user = UserMother.create()
+    login_user_setup.repo.save(user)
+    user.password = login_user_setup.hasher.hash("correct-password")
+    login_user_setup.repo.save(user)
+    
+    dto = LoginDTO(email=user.email.email, password="wrong-password")
+    
+    with pytest.raises(Exception):
+        login_user_setup.use_case.run(dto)
+
+def test_it_raises_when_given_email_is_not_registered(login_user_setup: LoginUserSetup):
+    dto = LoginDTO(email="noone@fake.com", password="whatever")
+    
+    with pytest.raises(Exception):
+        login_user_setup.use_case.run(dto)
