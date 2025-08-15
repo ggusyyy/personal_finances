@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any, MutableMapping
 
+from dotenv import load_dotenv
 from jose.exceptions import ExpiredSignatureError
 from jose import JWTError, jwt
 import os
@@ -14,6 +15,7 @@ from src.auth.domain.token_manager import TokenManager
 
 class JwtTokenManager(TokenManager):
     def __init__(self) -> None:
+        load_dotenv()
         self.__secret_key: str = os.environ["JWT_SECRET_KEY"]
 
     def encrypt_token(self, user_id: str) -> AuthToken:

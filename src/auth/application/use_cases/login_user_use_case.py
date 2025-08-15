@@ -4,6 +4,7 @@ from src.auth.domain.exceptions.invalid_credentials_exception import InvalidCred
 from src.auth.domain.pw_hasher import PasswordHasher
 from src.auth.domain.token_manager import TokenManager
 from src.users.domain.user_repository import UserRepository
+from src.users.domain.value_objects.email import Email
 
 
 class LoginUserUseCase:
@@ -19,13 +20,13 @@ class LoginUserUseCase:
 
     
     def run(self, login_dto: LoginDTO) -> AuthToken:
-        user = self.__user_repo.get_by_username(login_dto.username)
+        user = self.__user_repo.get_by_email(Email(login_dto.email))
         if not user:
-            raise InvalidCredentialsException
+            raise InvalidCredentialsException("There is no user with this email.")
         
-        hashed_pw = self.__hasher.hash(login_dto.password)
+        hashed_pw = user.password
         
         if not self.__hasher.verify(login_dto.password, hashed_pw):
-            raise InvalidCredentialsException
+            raise InvalidCredentialsException("Invalid email or password.")
         
         return self.__token_manager.encrypt_token(user.id)

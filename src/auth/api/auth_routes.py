@@ -1,6 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.auth.api.deps import get_register_user_use_case
+from src.auth.application.dtos.login_dto import LoginDTO
+from src.auth.application.use_cases.login_user_use_case import LoginUserUseCase
+from src.auth.domain.auth_token import AuthToken
+from src.auth.api.deps import get_login_user_use_case, get_register_user_use_case
 from src.auth.api.schemas import UserRegister
 from src.auth.application.dtos.register_user_dto import RegisterUserDTO
 from src.auth.application.use_cases.register_user_use_case import RegisterUserUseCase
@@ -14,7 +17,7 @@ router = APIRouter()
 def register_user(
     new_user: UserRegister,
     register_user_use_case: RegisterUserUseCase = Depends(get_register_user_use_case)
-):
+) -> UserOut:
     """
     Endpoint to create a new user
     """
@@ -39,3 +42,24 @@ def register_user(
         username=user.username,
         email=str(user.email)
     )
+
+
+@router.post("/login", response_model=str)
+def login_user(
+    login_dto: LoginDTO,
+    use_case: LoginUserUseCase = Depends(get_login_user_use_case)
+    ) -> str:
+    """
+    Endpoint to log in a user and return a JWT token
+    """
+
+    try:
+        token: AuthToken = use_case.run(login_dto)
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e)
+        )
+    
+    return token.content
