@@ -1,9 +1,10 @@
-from src.users.application.dtos.create_user_dto import CreateUserDTO
 
 from faker import Faker
 
+from src.auth.application.dtos.register_user_dto import RegisterUserDTO
 
-class CreateUserDTOMother:
+
+class RegisterUserDTOMother:
 
     faker = Faker()
 
@@ -13,9 +14,9 @@ class CreateUserDTOMother:
         username: str | None = None,
         email: str | None = None,
         password: str | None = None,
-    ) -> CreateUserDTO:
+    ) -> RegisterUserDTO:
         username = username or cls.faker.user_name()
         email = email or cls.faker.email()
         password = password or cls.faker.password()
 
-        return CreateUserDTO(username, email, password)
+        return RegisterUserDTO(username, email, password)

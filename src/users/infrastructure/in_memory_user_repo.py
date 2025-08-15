@@ -17,6 +17,12 @@ class InMemoryUserRepository(UserRepository):
                 return user     
         return None
     
+    def get_by_username(self, username: str) -> Optional[User]:
+        for user in self.users.values():
+            if user.username == username:
+                return user
+        return None
+
     def get_by_email(self, email: Email) -> Optional[User]:
         for user in self.users.values():
             if user.email == email:
