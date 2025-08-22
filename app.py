@@ -2,7 +2,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 
 from src.auth.api.auth_routes import router as auth_routes
-from src.users.api.user_routes import router as user_router
+from src.users.api.user_routes import router as user_routes
+from src.transactions.api.transactions_routes import router as transaction_routes
 
 load_dotenv()
 
@@ -13,8 +14,9 @@ app = FastAPI(
 )
 
 @app.get("/")
-async def home() -> dict[str, str]:
+async def home():
     return {"message": "Welcome to the Personal Finance App!"}
 
-app.include_router(user_router, prefix="/api", tags=["users"])
-app.include_router(auth_routes, prefix="/api", tags=["auth"])
+app.include_router(user_routes,         prefix="/api", tags=["users"])
+app.include_router(auth_routes,         prefix="/api", tags=["auth"])
+app.include_router(transaction_routes,  prefix="/api", tags=["transactions"])
