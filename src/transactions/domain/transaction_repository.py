@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from transactions.domain.transaction import Transaction
+from src.transactions.domain.transaction import Transaction
 
 
 class TransactionRepository(ABC):

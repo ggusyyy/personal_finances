@@ -49,6 +49,6 @@ def test_user_already_exists(register_user_setup: RegisterUserSetup):
     )
 
     with pytest.raises(UserAlreadyExistsException):
-        new_gus: User = register_user_setup.use_case.run(
+        register_user_setup.use_case.run(
             RegisterUserDTOMother.create(email=str(gus.email))
         )

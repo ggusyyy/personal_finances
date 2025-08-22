@@ -1,13 +1,17 @@
-from dataclasses import dataclass
 from datetime import date
+from pydantic import BaseModel
 
 from src.transactions.domain.value_objects.transaction_kind import TransactionKind
 
 
-@dataclass
-class Transaction:
+class TransactionCreate(BaseModel):
+    concept: str
+    kind: TransactionKind
+    amount: float
+    date: date
+    
+class TransactionOut(BaseModel):
     id: str
-    user_id: str
     concept: str
     kind: TransactionKind
     amount: float

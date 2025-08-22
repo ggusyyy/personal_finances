@@ -37,7 +37,7 @@ def get_user_by_id(
     Endpoint to get a user by id
     """
     try:
-        user: UserOut = get_user_by_id_use_case.run(id) # ARREGLA ESTO
+        user: UserOut = get_user_by_id_use_case.run(id)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

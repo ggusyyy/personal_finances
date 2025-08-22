@@ -14,7 +14,7 @@ from src.users.infrastructure.in_memory_user_repo import InMemoryUserRepository
 @dataclass
 class GetUserByIdSetup:
     repo: UserRepository
-    usecase: GetUserByIdUseCase
+    use_case: GetUserByIdUseCase
 
 
 @pytest.fixture
@@ -24,7 +24,7 @@ def get_user_by_id_setup() -> GetUserByIdSetup:
 
     return GetUserByIdSetup(
         repo=user_repository,
-        usecase=get_user_by_id_uc
+        use_case=get_user_by_id_uc
         )
 
 
@@ -32,7 +32,7 @@ def test_user_is_got_succesfully(get_user_by_id_setup: GetUserByIdSetup):
     gus: User = UserMother.create()
     get_user_by_id_setup.repo.save(gus)
 
-    new_gus: UserOut = get_user_by_id_setup.usecase.run(gus.id)
+    new_gus: UserOut = get_user_by_id_setup.use_case.run(gus.id)
 
     assert new_gus is not None
     assert new_gus.id == gus.id
@@ -41,4 +41,4 @@ def test_user_is_got_succesfully(get_user_by_id_setup: GetUserByIdSetup):
 
 def test_it_raises_when_user_not_found(get_user_by_id_setup: GetUserByIdSetup):
     with pytest.raises(UserNotFoundException):
-        get_user_by_id_setup.usecase.run("non-existent-id")
+        get_user_by_id_setup.use_case.run("non-existent-id")

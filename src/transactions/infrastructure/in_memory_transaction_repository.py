@@ -1,7 +1,7 @@
 from typing import Dict
-from transactions.domain.transaction import Transaction
-from transactions.domain.transaction_repository import TransactionRepository
 
+from src.transactions.domain.transaction import Transaction
+from src.transactions.domain.transaction_repository import TransactionRepository
 
 class InMemoryTransactionRepository(TransactionRepository):
     def __init__(self):
