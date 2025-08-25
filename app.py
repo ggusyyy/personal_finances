@@ -1,16 +1,27 @@
+from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
+from src.shared.infrastructure.bootstrap_db import bootstrap_db
+from src.shared.infrastructure.postgres import close_pool, init_pool
 from src.auth.api.auth_routes import router as auth_routes
 from src.users.api.user_routes import router as user_routes
 from src.transactions.api.transactions_routes import router as transaction_routes
 
 load_dotenv()
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_pool()       # crea el pool una vez
+    bootstrap_db()    # crea tablas si no existen (solo dev)
+    yield
+    close_pool()
+
 app = FastAPI(
-    title="Personal Finance App",
+    title="Personal Finance App",   
     description="An application to manage personal finances",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 @app.get("/")
