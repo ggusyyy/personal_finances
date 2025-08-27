@@ -1,3 +1,4 @@
+import logging
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -11,6 +12,7 @@ from src.transactions.application.use_cases.get_all_transaction_by_user_id_use_c
 
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 @router.post("/transactions", response_model=TransactionOut, status_code=status.HTTP_201_CREATED)
 def create_transaction(
@@ -34,9 +36,10 @@ def create_transaction(
         )
     
     except Exception as e:
+        logging.error(f"Error creating transaction: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail="Error creating transaction"
         )
     
     return TransactionOut(
@@ -59,9 +62,10 @@ def get_transaction(
     try:
         transaction: Transaction = use_case.run(transaction_id)
     except Exception as e:
+        logging.error(f"Error getting transaction: {e}")
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Error getting transaction"
         )
         
     return TransactionOut(
@@ -84,9 +88,10 @@ def get_all_transactions_by_user_id(
     try:
         transactions: List[Transaction] = use_case.run(user_id)
     except Exception as e:
+        logging.error(f"Error getting transaction: {e}")
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Error getting transaction"
         )
         
     return [

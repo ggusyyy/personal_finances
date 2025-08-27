@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from src.auth.application.dtos.login_dto import LoginDTO
@@ -12,6 +13,7 @@ from src.users.domain.user import User
 
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 @router.post("/users", response_model=UserOut, status_code=status.HTTP_201_CREATED)
 def register_user(
@@ -30,11 +32,11 @@ def register_user(
             password=new_user.password
             )
         )
-
     except Exception as e:
+        logging.error(f"Error registering user: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail="Error registering user"
         )
     
     return UserOut(
@@ -57,9 +59,10 @@ def login_user(
         token: AuthToken = use_case.run(login_dto)
     
     except Exception as e:
+        logging.error(f"Error log: {e}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=str(e)
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Error log"
         )
     
     return token.content

@@ -1,42 +1,40 @@
+from functools import lru_cache
 import os
 from contextlib import contextmanager
 from typing import Generator
 from psycopg2.pool import SimpleConnectionPool
-from psycopg2 import DatabaseError
 from psycopg2.extensions import connection as Connection 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-__pool: SimpleConnectionPool | None = None
-
-def init_pool(dsn: str | None = None, minconn: int = 1, maxconn: int = 5) -> None:
-    global __pool
-    if __pool is None:
-        dsn = dsn or os.getenv("DATABASE_URL")
-        if not dsn:
-            raise RuntimeError("DATABASE_URL no configurado")
-        __pool = SimpleConnectionPool(minconn, maxconn, dsn)
+@lru_cache(maxsize=1)
+def get_pool() -> SimpleConnectionPool:
+    dsn = os.getenv("DATABASE_URL")
+    if not dsn:
+        raise RuntimeError("DATABASE_URL no configurado")
+    minconn = int(os.getenv("DB_MINCONN", "1"))
+    maxconn = int(os.getenv("DB_MAXCONN", "5"))
+    return SimpleConnectionPool(minconn, maxconn, dsn)
 
 def close_pool() -> None:
-    global __pool
-    if __pool:
-        __pool.closeall()
-        __pool = None
+    # Llamar en el shutdown de la app (signal, atexit, hook del framework, etc.)
+    pool = get_pool()          # obtiene el único pool cacheado
+    pool.closeall()            # cierra todas las conexiones
+    get_pool.cache_clear()     # limpia la caché para permitir una futura recreación
 
 @contextmanager
 def db_conn() -> Generator[Connection, None, None]:
-    """cede una conexión del pool y la devuelve automáticamente."""
-    global __pool
-    if not __pool :
-        init_pool()
-        
-    
-    conn = __pool.getconn() 
+    pool = get_pool()
+    conn = pool.getconn()
     try:
         yield conn
-    except DatabaseError:
-        conn.rollback()
+        conn.commit()          # commit en la ruta de éxito
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass               # si no hay transacción abierta, ignoramos
         raise
     finally:
-        __pool.putconn(conn)
+        pool.putconn(conn)

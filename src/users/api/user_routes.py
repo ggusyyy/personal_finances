@@ -1,3 +1,4 @@
+import logging
 from typing import List
 from fastapi import APIRouter, status, Depends, HTTPException
 
@@ -9,7 +10,7 @@ from .deps import get_list_all_users_use_case, get_user_by_id_use_case
 
 
 router = APIRouter()
-
+logger = logging.getLogger(__name__)
 
 @router.get("/users/", response_model=List[UserOut])
 def get_all_users(
@@ -21,9 +22,10 @@ def get_all_users(
     try:
         users: List[UserOut] = get_all_users_use_case.run()
     except Exception as e:
+        logging.error(f"Error getting users: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail="Error getting users"
         )
 
     return users
@@ -39,9 +41,10 @@ def get_user_by_id(
     try:
         user: UserOut = get_user_by_id_use_case.run(id)
     except Exception as e:
+        logging.error(f"Error getting user: {e}")
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Error getting user"
         )
 
     return user
