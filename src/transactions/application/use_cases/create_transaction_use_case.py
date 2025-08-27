@@ -30,7 +30,7 @@ class CreateTransactionUseCase:
             id=str(uuid4()),
             user_id=create_transaction_dto.user_id,
             concept=create_transaction_dto.concept,
-            kind=create_transaction_dto.kind,
+            kind=TransactionKind(create_transaction_dto.kind),
             amount=create_transaction_dto.amount,
             date=create_transaction_dto.date,
         )
