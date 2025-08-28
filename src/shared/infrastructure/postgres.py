@@ -26,7 +26,7 @@ def close_pool() -> None:
 @contextmanager
 def db_conn() -> Generator[Connection, None, None]:
     pool = get_pool()
-    conn = pool.getconn()
+    conn: Connection = pool.getconn()
     try:
         yield conn
         conn.commit()          # commit en la ruta de éxito
